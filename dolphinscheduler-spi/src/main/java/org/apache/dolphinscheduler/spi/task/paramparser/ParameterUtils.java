@@ -72,6 +72,11 @@ public class ParameterUtils {
             // replace variable ${} form,refers to the replacement of system variables and custom variables
             parameterString = PlaceholderUtils.replacePlaceholders(parameterString, parameterMap, true);
         }
+        if (compareParamWithKey(parameterString, parameterMap)) {// 走自定义变量
+            Map<String, String> newParameterMap = new HashMap<>();
+            newParameterMap.put("current_time_millis", "15641654654654165");
+            parameterString = PlaceholderUtils.replacePlaceholders(parameterString, newParameterMap, true);
+        }
         if (parameterMap != null && null != parameterMap.get(PARAMETER_DATETIME)) {
             //Get current time, schedule execute time
             String cronTimeStr = parameterMap.get(PARAMETER_DATETIME);
@@ -84,6 +89,16 @@ public class ParameterUtils {
             return dateTemplateParse(parameterString, cronTime);
         }
         return parameterString;
+    }
+
+    //参数与key值进行比对
+    private static boolean compareParamWithKey(String parameterString, Map<String, String> parameterMap) {
+        for (Map.Entry<String, String> en : parameterMap.entrySet()) {
+            if (parameterString.equals(en.getKey())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

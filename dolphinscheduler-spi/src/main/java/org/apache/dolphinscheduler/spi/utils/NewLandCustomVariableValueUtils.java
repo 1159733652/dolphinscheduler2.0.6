@@ -1,6 +1,6 @@
-package org.apache.dolphinscheduler.common.utils;
+package org.apache.dolphinscheduler.spi.utils;
 
-import org.apache.dolphinscheduler.common.Constants;
+import org.apache.dolphinscheduler.spi.task.TaskConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
