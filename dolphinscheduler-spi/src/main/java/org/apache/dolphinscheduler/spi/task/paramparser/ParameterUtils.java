@@ -26,6 +26,7 @@ import org.apache.dolphinscheduler.spi.enums.DataType;
 import org.apache.dolphinscheduler.spi.task.Property;
 import org.apache.dolphinscheduler.spi.utils.DateUtils;
 import org.apache.dolphinscheduler.spi.utils.JSONUtils;
+import org.apache.dolphinscheduler.spi.utils.NewLandCustomVariableValueUtils;
 import org.apache.dolphinscheduler.spi.utils.StringUtils;
 
 import java.sql.PreparedStatement;
@@ -72,17 +73,16 @@ public class ParameterUtils {
             // replace variable ${} form,refers to the replacement of system variables and custom variables
             parameterString = PlaceholderUtils.replacePlaceholders(parameterString, parameterMap, true);
         }
-//        if (compareParamWithKey(parameterString, parameterMap)) {// 走自定义变量
-//            Map<String, String> newParameterMap = new HashMap<>();
-//            newParameterMap.put("current_time_millis", "15641654654654165");
-//            parameterString = PlaceholderUtils.replacePlaceholders(parameterString, newParameterMap, true);
-//        }
         if (parameterMap != null && null != parameterMap.get(PARAMETER_DATETIME)) {
             //Get current time, schedule execute time
             String cronTimeStr = parameterMap.get(PARAMETER_DATETIME);
             cronTime = DateUtils.parse(cronTimeStr, PARAMETER_FORMAT_TIME);
         } else {
             cronTime = new Date();
+        }
+        if (compareParamWithKey(parameterString, parameterMap)) {// 走自定义变量
+            Map<String, String> newParameterMap = NewLandCustomVariableValueUtils.getVariableValues(cronTime);
+            parameterString = PlaceholderUtils.replacePlaceholders(parameterString, newParameterMap, true);
         }
         // replace time $[...] form, eg. $[yyyyMMdd]
         if (cronTime != null) {
