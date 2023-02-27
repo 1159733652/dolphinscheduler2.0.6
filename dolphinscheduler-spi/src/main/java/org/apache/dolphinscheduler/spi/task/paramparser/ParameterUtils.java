@@ -240,6 +240,22 @@ public class ParameterUtils {
     }
 
     /**
+     * ${yyyyMMdd} replace newLand
+     */
+    public static String replaceScheduleTime2(String text, Date scheduleTime) {
+        Map<String, String> paramsMap = new HashMap<>();
+        //if getScheduleTime null ,is current date
+        if (null == scheduleTime) {
+            scheduleTime = new Date();
+        }
+
+        paramsMap = NewLandCustomVariableValueUtils.getVariableValues(scheduleTime);
+        text = ParameterUtils.convertParameterPlaceholders(text,paramsMap);
+
+        return text;
+    }
+
+    /**
      * format convert
      *
      * @param paramsMap params map
