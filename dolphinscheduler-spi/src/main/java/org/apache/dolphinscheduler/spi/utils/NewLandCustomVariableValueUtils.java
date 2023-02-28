@@ -209,7 +209,7 @@ public class NewLandCustomVariableValueUtils {
     // 数据时间-时 H  ${data_hour_end}
     private static String getHourDateH(Date cronTime) {
         try {
-            SimpleDateFormat H_FORMAT = new SimpleDateFormat("h");
+            SimpleDateFormat H_FORMAT = new SimpleDateFormat("H");
             return H_FORMAT.format(cronTime);
         } catch (Exception e) {
             logger.error("Error data_hour_end date" + e);
@@ -220,7 +220,7 @@ public class NewLandCustomVariableValueUtils {
     // 数据时间-时(不足补0) HH  ${data_hour}
     private static String getHourDateHH(Date cronTime) {
         try {
-            SimpleDateFormat HH_FORMAT = new SimpleDateFormat("hh");
+            SimpleDateFormat HH_FORMAT = new SimpleDateFormat("HH");
             return HH_FORMAT.format(cronTime);
         } catch (Exception e) {
             logger.error("Error data_hour date" + e);
@@ -586,6 +586,9 @@ public class NewLandCustomVariableValueUtils {
             parseCalender.setTime(cronTime);
             parseCalender.set(Calendar.DAY_OF_MONTH, parseCalender.get(Calendar.DAY_OF_MONTH) - 1);
             int i = parseCalender.get(Calendar.DAY_OF_WEEK) - 1;
+            if (i == 0 ) {
+                i = 7;
+            }
             return String.valueOf(i);
         } catch (Exception e) {
             logger.error("Exception week_num date" + e);
@@ -826,9 +829,8 @@ public class NewLandCustomVariableValueUtils {
         try {
             Calendar parseCalender = Calendar.getInstance();
             parseCalender.setTime(cronTime);
-            parseCalender.set(Calendar.DAY_OF_MONTH, parseCalender.get(Calendar.DAY_OF_MONTH) - 2);
-            Integer dayDate = Integer.valueOf(getMonthDateM(parseCalender.getTime()));
-            return dayDate % 2 == 0 ? "2" : "1";
+            parseCalender.set(Calendar.DAY_OF_MONTH, parseCalender.get(Calendar.DAY_OF_MONTH) - 1);
+            return getDoubleMonth(parseCalender.getTime());
         } catch (Exception e) {
             logger.error("Error pre_double_month_d date" + e);
         }
@@ -877,11 +879,12 @@ public class NewLandCustomVariableValueUtils {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(cronTime);
 
-            int all = calendar.get(Calendar.MONTH) - 1;
+            int all = calendar.get(Calendar.MONTH);
             if (all > 3) {
                 int temp = all % 3;
                 all = temp == 0 ? 3 : temp;
             }
+            all = all == 0 ? 3 : all;
             String s = String.valueOf(all);
             return ZERO + s;
         } catch (Exception e) {
@@ -1603,8 +1606,9 @@ public class NewLandCustomVariableValueUtils {
 
     // 当前月12月分区   ${curr_mon_number12}
     private static String get12MoenthPartition(Date cronTime,int T) {
+
         try {
-            Date lastMonth = DateUtils.getLastDayOfMonth(DateUtils.addMonths(cronTime, 0));
+            Date lastMonth = DateUtils.getLastDayOfMonth(DateUtils.addMonths(cronTime, T));
             return getMonthDateM(lastMonth);
         } catch (Exception e) {
             logger.error("Exception curr_mon_number12 date" + e);
