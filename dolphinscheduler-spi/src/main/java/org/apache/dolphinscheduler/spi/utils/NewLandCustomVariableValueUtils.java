@@ -144,6 +144,8 @@ public class NewLandCustomVariableValueUtils {
         resMap.put(Constants.V_FIVE_YEAR_PRE4, getVFiveYearPre4(cronTime));
         resMap.put(Constants.V_FIVE_YEAR_PRE5, getVFiveYearPre5(cronTime));
         resMap.put(Constants.V_FIVE_YEAR_PRE6, getVFiveYearPre6(cronTime));
+        resMap.put(Constants.PRE_DATA_DATE, getPreDataDate(cronTime));
+        resMap.put(Constants.DATA_DATE, getDataDate(cronTime));
 
         return resMap;
     }
@@ -1701,6 +1703,32 @@ public class NewLandCustomVariableValueUtils {
             return  getFiveYearBase(calendar.getTime());
         } catch (Exception e) {
             logger.error("Exception v_five_year_pre6 date" + e);
+        }
+        return "";
+    }
+
+
+    // ${pre_data_date} T-1
+    private static String getPreDataDate(Date cronTime) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(cronTime);
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH)-2);
+            return  Y_M_D_FORMAT.format(calendar.getTime());
+        } catch (Exception e) {
+            logger.error("Exception pre_data_date date" + e);
+        }
+        return "";
+    }
+    // ${data_date}  T-1
+    private static String getDataDate(Date cronTime) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(cronTime);
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH)-1);
+            return  Y_M_D_FORMAT.format(calendar.getTime());
+        } catch (Exception e) {
+            logger.error("Exception data_date date" + e);
         }
         return "";
     }

@@ -312,4 +312,7 @@ public class Constants {
     public static final String  V_FIVE_YEAR_PRE4 = "v_five_year_pre4";// 月变量：上4个月对应的五年分区
     public static final String  V_FIVE_YEAR_PRE5 = "v_five_year_pre5";// 月变量：上5个月对应的五年分区
     public static final String  V_FIVE_YEAR_PRE6 = "v_five_year_pre6";// 月变量：上6个月对应的五年分区
+
+    public static final String  PRE_DATA_DATE = "pre_data_date";// 昨日
+    public static final String  DATA_DATE = "data_date";// 当日
 }
